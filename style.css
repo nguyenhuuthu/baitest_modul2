@@ -22,3 +22,55 @@ body {
     width: 30px;
     height: 30px;
 }
+/* bai2 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#input{
+    width: 300px;
+    height: 35px;
+    outline: none;
+    border-radius: 5px;
+}
+.Search{
+    background-color: #4069c5;
+    color: white;
+    border: 1px #4069c5 solid;
+    display: inline-block;
+    height: 33px;
+    width: 33px;
+    margin-left: -4px;
+    border-radius: 5px;
+
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+   
+}
+
+
+.wrapper{
+    border: 1px solid gray;
+    border-top: none;
+    width: 300px;
+    margin-top: 5px;
+    
+}
+.wrapper :hover{
+    background-color: rgb(64, 233, 41);
+}
+.wrapper-1{
+    display: flex;
+    align-items: flex-start;
+    border:  0.1px gray solid;
+}
+.img{
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+}
