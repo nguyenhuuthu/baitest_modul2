@@ -30,17 +30,18 @@
     </div>
 
     <!-- bai 2 -->
-    <div class="container">
-      <form action="">
-        <div>
-          <input type="text" placeholder="Search..." id="input" />
-          <button class="Search">
-            <ion-icon name="search-outline"></ion-icon>
-          </button>
-        </div>
+    <div class="container-wrapper">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png"
+        alt=""
+      />
 
-        <div class="wrapper" id="wrapper"></div>
-      </form>
+      <div id="input">
+        <input type="text" id="user-input" />
+        <div id="suggestion"></div>
+      </div>
+      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+      <i class="fa-solid fa-keyboard" id="keyboard-icon"></i>
     </div>
     <script src="./main.js"></script>
   </body>

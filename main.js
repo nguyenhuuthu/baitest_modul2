@@ -105,32 +105,88 @@ function getData(url, fn) {
 }
 
 // bai 2
-let input = document.getElementById("input");
-let wrapper = document.getElementById("wrapper");
+let input = document.querySelector("#user-input");
+let suggestions;
 
-input.addEventListener(`keyup`, function () {
-  console.log(input.value);
-  wrapper.innerHTML = "";
+function getData(url, fn) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        fn(undefined, JSON.parse(xhr.responseText));
+      } else {
+        fn(new Error(xhr.statusText), undefined);
+      }
+    }
+  };
+  xhr.open("GET", url, true);
+  xhr.send();
+}
+
+input.addEventListener("keyup", () => {
+  let userValue = input.value;
+
+  let div1 = document.getElementById("suggestion");
+  div1.innerHTML = "";
+
   getData(
-    `https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&limit=10&format=json&search=${input.value}`,
-    function (err, res) {
+    `https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&limit=10&format=json&search=${userValue}`,
+    (err, res) => {
       if (err) {
         console.log(err);
       } else {
         console.log(res);
-        let sugestion = res[1].filter(function (eee) {
-          return eee.toLowerCase().startsWith(input.value);
+
+        suggestions = res[1].filter((sug) =>
+          sug.toLowerCase().startsWith(userValue)
+        );
+        console.log(res[1]);
+        console.log(suggestions);
+
+        suggestions.forEach((e) => {
+          getData(
+            `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=pageprops|pageimages&format=json&titles=${e}`,
+            function (err1, res1) {
+              if (err1) {
+                console.log(err1);
+              } else {
+                console.log(res1);
+              }
+
+              let id = Object.keys(res1.query.pages);
+
+              console.log(res1.query.pages[id].thumbnail.source);
+              console.log(Object.keys(res1.query.pages[id].pageprops));
+              let des = "wikibase-shortdesc";
+
+              let div = document.createElement("div");
+              div.classList.add("suggestion-items");
+
+              div.innerHTML = `
+              <img src="${res1.query.pages[id].thumbnail.source}"
+                alt="">
+            <div style="padding-left:10px">
+                <h4>${e}</h4>
+                <div class="suggestion-description">${res1.query.pages[id].pageprops[des]}</div>
+    
+            </div>
+            `;
+
+              div1.appendChild(div);
+
+              if (userValue === "") {
+                div1.innerHTML = "";
+              }
+
+              div.onclick = () => {
+                window.location.href = `https://en.wikipedia.org/wiki/${e}`;
+              };
+            }
+          );
         });
-        sugestion.forEach((element) => {
-          let div = document.createElement("div");
-          div.innerHTML = `<div class="wrapper-1"><img src="./Saved Pictures/anh 1.png" alt="" class="img"><div class="wrapper-2"><h4>${element}</h4><p>Description</p></div></div>`;
-          wrapper.appendChild(div);
-        });
-        if (input.value === ``) {
-          wrapper.innerHTML = ``;
-        }
-        console.log(sugestion);
       }
     }
   );
+
+  console.log(suggestions);
 });
